@@ -24,18 +24,19 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         playerSound = GetComponent<AudioSource>();
+        //get components because you can't just slide them in the inspector ¯\_(ツ)_/¯
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && isOnGround && !gameOver)
+        if (Input.GetButtonDown("Jump") && isOnGround && !gameOver) //when press jumpButton, is on ground and not gameover
         {
-            runParticle.Stop();
-            playerSound.PlayOneShot(jumpSound, 1f);
-            animator.SetTrigger("Jump_trig");
-            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isOnGround = false;
+            runParticle.Stop(); //stop run particle
+            playerSound.PlayOneShot(jumpSound, 1f); //play jump sound
+            animator.SetTrigger("Jump_trig"); //play jump anim
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); //add jumpForce upwards
+            isOnGround = false; //no longer on ground
         }
         
         //faster falling
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
             playerRb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplierFloat - 1) * Time.deltaTime;
         }
 
-//control jump height by length of time jump button held
+        //while you are holding jump button gravity is lower than normal so you can control how high you jump
         if (playerRb.velocity.y > 0 && !Input.GetButton("Jump")) {
             playerRb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplierFloat - 1) * Time.deltaTime;
         }
@@ -51,19 +52,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground")) //collide with ground
         {
-            runParticle.Play();
-            isOnGround = true;
-        }else if (other.gameObject.CompareTag("Obstacle"))
+            runParticle.Play(); //start run particle again
+            isOnGround = true; //you are on ground again
+        }else if (other.gameObject.CompareTag("Obstacle")) //collide with obstacle
         {
-            playerSound.PlayOneShot(crashSound, 1f);
-            runParticle.Stop();
-            gameOver = true;
-            Debug.Log("Game Over!");
-            explosionParticle.Play();
-            animator.SetBool("Death_b", true);
-            animator.SetInteger("DeathType_int", 1);
+            playerSound.PlayOneShot(crashSound, 1f); //play death sound
+            runParticle.Stop(); //stop run particle
+            gameOver = true; //set gameover
+            Debug.Log("Game Over!"); //gameover message
+            explosionParticle.Play(); //explode
+            animator.SetBool("Death_b", true); //play death animation
+            animator.SetInteger("DeathType_int", 1); //set death animation type to 1
         }
     }
 }

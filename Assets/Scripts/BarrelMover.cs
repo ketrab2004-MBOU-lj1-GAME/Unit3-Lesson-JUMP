@@ -12,18 +12,21 @@ public class BarrelMover : MonoBehaviour
     private void Start()
     {
         playerControllerSc = GameObject.Find("Player").GetComponent<PlayerController>();
+        //find player and set playerControllerScript to it's script
     }
 
     void Update()
     {
-        if (!playerControllerSc.gameOver)
+        if (!playerControllerSc.gameOver) //not gameover
         {
             transform.Translate(Vector3.left * Time.deltaTime * speed);
+            //move left based on speed and delta
         }
 
-        if (transform.position.x <= destroyLeft && gameObject.CompareTag("Obstacle"))
+        if (transform.position.x <= destroyLeft && gameObject.CompareTag("Obstacle")) //more left than destroy distance and has tag obstacle
         {
             Destroy(gameObject);
+            //destroy
         }
     }
 }

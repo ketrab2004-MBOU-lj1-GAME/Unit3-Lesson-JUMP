@@ -14,15 +14,19 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         playerControllerSc = GameObject.Find("Player").GetComponent<PlayerController>();
+        //find player and set playerControllerScript to it's script
         InvokeRepeating("spawnObstacle", startDelay, repeatRate);
+        //do spawnObstacle every repeatRate after startDelay
     }
 
     void spawnObstacle()
     {
-        if (!playerControllerSc.gameOver)
+        if (!playerControllerSc.gameOver) //not gameover
         {
             GameObject chosenPrefab = prefabList[Random.Range(0, prefabList.Length)];
+            //choose prefab from list
             Instantiate(chosenPrefab, transform.position + spawnPos, chosenPrefab.transform.rotation, transform);
+            //use chosen prefab and spawn with spawnPos as offset, and prefab's rotation
         }
     }
 }
